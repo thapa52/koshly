@@ -1,6 +1,8 @@
 # Koshly
 
-A premium personal finance dashboard built with Flutter. **Koshly** (derived from the Nepali word *Kosh*, meaning Treasury) helps users track wealth, manage expenses, and hit savings goals with a professional-grade offline experience.
+A production-level personal finance dashboard built with Flutter & Clean Architecture. Track expenses, income, savings goals, and generate reports — fully offline.
+
+> Koshly is derived from the Nepali word *Kosh* (कोष), meaning Treasury.
 
 ## Features (Planned)
 - **Clean Architecture** (Data, Domain, Presentation)
@@ -23,6 +25,6 @@ A premium personal finance dashboard built with Flutter. **Koshly** (derived fro
 This project follows **Clean Architecture** principles to ensure scalability, maintainability, and testability.
 
 ## Developer
-**Pradeep Thapa**
-Flutter Developer
+**Pradeep Thapa**  
+Flutter Developer  
 [GitHub](https://github.com/thapa52)
