@@ -17,7 +17,7 @@ class KoshlyApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: Scaffold(body: Center(child: Text('Koshly is starting....'))),
+      home: const Scaffold(body: Center(child: Text('Koshly is starting....'))),
     );
   }
 }

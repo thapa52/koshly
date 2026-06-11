@@ -21,5 +21,5 @@ void main() async {
   // ─── Run the app ────────────────────────────────────
   // ProviderScope is required for Riverpod to work.
   // It must wrap the entire app.
-  runApp(ProviderScope(child: KoshlyApp()));
+  runApp(const ProviderScope(child: KoshlyApp()));
 }
