@@ -113,8 +113,10 @@ flutter run
 - [x] Clean Architecture folder structure
 - [x] Dependencies configured
 - [x] Android build configuration
-- [ ] Core layer (Theme, Constants, Error Handling)
-- [ ] Transaction feature
+- [x] Core layer (Theme, Constants, Error Handling)
+- [x] Transaction domain layer (Entities, Repository, Use Cases)
+- [ ] Transaction data layer (Hive models, Repository implementation)
+- [ ] Transaction presentation layer (Providers, Screens, Widgets)
 - [ ] Savings feature
 - [ ] Dashboard & Charts
 - [ ] Reports & Export
