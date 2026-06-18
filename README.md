@@ -99,10 +99,40 @@ cd koshly
 flutter pub get
 ~~~
 
-3. **Run the app**
+3. **Generate required files**
+
+~~~bash
+dart run build_runner build --delete-conflicting-outputs
+~~~
+
+4. **Run the app**
 
 ~~~bash
 flutter run
+~~~
+
+---
+
+## Code Generation
+
+This project uses code generation for:
+- Hive adapters
+- Riverpod providers
+- Freezed models
+- JSON serialization
+
+Generated files (`*.g.dart`, `*.freezed.dart`) are **not committed** to Git.
+
+Whenever you add or modify annotated classes, run:
+
+~~~bash
+dart run build_runner build --delete-conflicting-outputs
+~~~
+
+During active development, you can use watch mode:
+
+~~~bash
+dart run build_runner watch --delete-conflicting-outputs
 ~~~
 
 ---
@@ -115,7 +145,7 @@ flutter run
 - [x] Android build configuration
 - [x] Core layer (Theme, Constants, Error Handling)
 - [x] Transaction domain layer (Entities, Repository, Use Cases)
-- [ ] Transaction data layer (Hive models, Repository implementation)
+- [x] Transaction data layer (Hive models, Repository implementation)
 - [ ] Transaction presentation layer (Providers, Screens, Widgets)
 - [ ] Savings feature
 - [ ] Dashboard & Charts
@@ -127,8 +157,8 @@ flutter run
 
 ## Developer
 
-**Pradeep Thapa**  
-Flutter Developer  
+**Pradeep Thapa**
+Flutter Developer
 [GitHub](https://github.com/thapa52)
 
 ---
