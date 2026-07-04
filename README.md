@@ -146,7 +146,8 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Core layer (Theme, Constants, Error Handling)
 - [x] Transaction domain layer (Entities, Repository, Use Cases)
 - [x] Transaction data layer (Hive models, Repository implementation)
-- [ ] Transaction presentation layer (Providers, Screens, Widgets)
+- [x] Transaction presentation layer (Providers, Screens, Widgets)
+- [ ] GoRouter navigation
 - [ ] Savings feature
 - [ ] Dashboard & Charts
 - [ ] Reports & Export
