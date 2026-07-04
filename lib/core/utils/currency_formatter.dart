@@ -5,9 +5,9 @@ import '../constants/app_constants.dart';
 /// Handles all currency formatting throughout the app.
 /// Never format currency directly in widgets.
 /// Always use this class.
-class CurrentFormatter {
+class CurrencyFormatter {
   // Private constructor to prevent instantiation
-  CurrentFormatter._();
+  CurrencyFormatter._();
 
   /// Formats a double amount into a currency string.
   ///
@@ -22,11 +22,11 @@ class CurrentFormatter {
     String? locale,
     bool showSign = false,
   }) {
-    final currentSymbol = symbol ?? AppConstants.defaultCurrencySymbol;
+    final currencySymbol = symbol ?? AppConstants.defaultCurrencySymbol;
 
     final formatter = NumberFormat.currency(
       locale: locale ?? 'en_US',
-      symbol: currentSymbol,
+      symbol: currencySymbol,
       decimalDigits: 2,
     );
 
