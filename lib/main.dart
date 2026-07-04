@@ -4,22 +4,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
+import 'features/transactions/data/repositories/hive_transaction_repository.dart';
+import 'features/transactions/presentation/providers/repository_provider.dart';
 
 /// Entry point of the Koshly app.
 /// Handles all initialization before the app starts.
-void main() async {
-  // ─── Ensure Flutter binding is initialized ──────────
-  // Must be called before any async operations
+Future<void> main() async {
+  // Must be called before async plugin initialization.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ─── Load environment variables ─────────────────────
+  // Load environment variables.
   await dotenv.load(fileName: '.env');
 
-  // ─── Initialize Hive ────────────────────────────────
+  // Initialize Hive.
   await Hive.initFlutter();
 
-  // ─── Run the app ────────────────────────────────────
-  // ProviderScope is required for Riverpod to work.
-  // It must wrap the entire app.
-  runApp(const ProviderScope(child: KoshlyApp()));
+  // Initialize the transaction repository before the UI starts.
+  final transactionRepository = HiveTransactionRepository();
+  await transactionRepository.init();
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        transactionRepositoryProvider.overrideWith(
+          (ref) => transactionRepository,
+        ),
+      ],
+      child: const KoshlyApp(),
+    ),
+  );
 }
