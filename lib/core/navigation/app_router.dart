@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/transactions/presentation/screens/add_transaction_screen.dart';
 import '../../features/transactions/presentation/screens/transaction_list_screen.dart';
 import 'scaffold_with_nav_bar.dart';
@@ -27,7 +28,7 @@ class AppRoutes {
 /// Uses ShellRoute for bottom navigation bar support.
 /// Each tab maintains its own navigation stack.
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.transactions,
+  initialLocation: AppRoutes.dashboard,
   routes: [
     // ─── Shell Route (Bottom Navigation Bar) ──────────────
     ShellRoute(
@@ -39,11 +40,8 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.dashboard,
           pageBuilder:
-              (context, state) => const NoTransitionPage(
-                child: Scaffold(
-                  body: Center(child: Text('Dashboard - Coming Soon')),
-                ),
-              ),
+              (context, state) =>
+                  const NoTransitionPage(child: DashboardScreen()),
         ),
 
         // ─── Transactions Tab ─────────────────────────────
