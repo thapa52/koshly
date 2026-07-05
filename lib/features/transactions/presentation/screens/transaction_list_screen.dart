@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -8,7 +10,6 @@ import '../../domain/entities/transaction.dart';
 import '../../domain/use_cases/get_transaction_summary.dart';
 import '../providers/transaction_providers.dart';
 import '../widgets/transaction_tile.dart';
-import 'add_transaction_screen.dart';
 
 /// Main screen displaying all transactions.
 ///
@@ -76,12 +77,8 @@ class TransactionListScreen extends ConsumerWidget {
             ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => const AddTransactionScreen(),
-            ),
-          );
+        onPressed: () {
+          context.push(AppRoutes.addTransaction);
         },
         icon: const Icon(Icons.add),
         label: const Text('Add'),
