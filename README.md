@@ -148,8 +148,8 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Transaction data layer (Hive models, Repository implementation)
 - [x] Transaction presentation layer (Providers, Screens, Widgets)
 - [x] GoRouter navigation
+- [x] Dashboard with FL Chart (Pie chart, Bar chart, Recent transactions)
 - [ ] Savings feature
-- [ ] Dashboard & Charts
 - [ ] Reports & Export
 - [ ] Notifications
 - [ ] Unit Tests
