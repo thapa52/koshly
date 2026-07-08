@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
+import 'features/savings/data/repositories/hive_savings_repository.dart';
 import 'features/transactions/data/repositories/hive_transaction_repository.dart';
 import 'features/transactions/presentation/providers/repository_provider.dart';
 
@@ -19,9 +20,12 @@ Future<void> main() async {
   // Initialize Hive.
   await Hive.initFlutter();
 
-  // Initialize the transaction repository before the UI starts.
+  // Initialize repositories
   final transactionRepository = HiveTransactionRepository();
   await transactionRepository.init();
+
+  final savingsRepository = HiveSavingsRepository();
+  await savingsRepository.init();
 
   runApp(
     ProviderScope(
