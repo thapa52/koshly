@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
 import 'features/savings/data/repositories/hive_savings_repository.dart';
+import 'features/savings/presentation/providers/savings_repository_provider.dart';
 import 'features/transactions/data/repositories/hive_transaction_repository.dart';
 import 'features/transactions/presentation/providers/repository_provider.dart';
 
@@ -33,6 +34,7 @@ Future<void> main() async {
         transactionRepositoryProvider.overrideWith(
           (ref) => transactionRepository,
         ),
+        savingsRepositoryProvider.overrideWith((ref) => savingsRepository),
       ],
       child: const KoshlyApp(),
     ),
