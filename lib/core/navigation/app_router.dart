@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/savings/presentation/screens/add_savings_goal_screen.dart';
 import '../../features/transactions/presentation/screens/add_transaction_screen.dart';
 import '../../features/transactions/presentation/screens/transaction_list_screen.dart';
 import 'scaffold_with_nav_bar.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String transactions = '/transactions';
   static const String savings = '/savings';
   static const String settings = '/settings';
+  static const String addSavingsGoal = '/savings/add';
 
   // ─── Sub Routes ──────────────────────────────────────────
   static const String addTransaction = '/transactions/add';
@@ -80,6 +82,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.addTransaction,
       builder: (context, state) => const AddTransactionScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.addSavingsGoal,
+      builder: (context, state) => const AddSavingsGoalScreen(),
     ),
   ],
 );
