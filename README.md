@@ -150,7 +150,7 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] GoRouter navigation
 - [x] Dashboard with FL Chart (Pie chart, Bar chart, Recent transactions)
 - [x] Unit Tests (56 domain use case tests passing)
-- [ ] Savings feature
+- [x] Savings feature (Goals, progress tracking, contributions)
 - [ ] Reports & Export
 - [ ] Notifications
 
