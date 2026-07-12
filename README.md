@@ -151,6 +151,7 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Dashboard with FL Chart (Pie chart, Bar chart, Recent transactions)
 - [x] Unit Tests (56 domain use case tests passing)
 - [x] Savings feature (Goals, progress tracking, contributions)
+- [x] Theme toggle & Settings (Light/Dark/System with persistence)
 - [ ] Reports & Export
 - [ ] Notifications
 
