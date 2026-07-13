@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -21,19 +22,29 @@ class PdfExportService implements ExportService {
     required double totalIncome,
     required double totalExpenses,
   }) async {
+    // ─── Load Fonts ─────────────────────────────────────────
+    final regularFont = await _loadFont('Roboto-Regular.ttf');
+    final boldFont = await _loadFont('Roboto-Bold.ttf');
+
     final pdf = pw.Document();
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(32.0),
-        header: (context) => _buildHeader(title),
-        footer: (context) => _buildFooter(context),
+        theme: pw.ThemeData.withFont(base: regularFont, bold: boldFont),
+        header: (context) => _buildHeader(title, boldFont, regularFont),
+        footer: (context) => _buildFooter(context, regularFont),
         build:
             (context) => [
-              _buildSummarySection(totalIncome, totalExpenses),
+              _buildSummarySection(
+                totalIncome,
+                totalExpenses,
+                boldFont,
+                regularFont,
+              ),
               pw.SizedBox(height: 24.0),
-              _buildTransactionTable(transactions),
+              _buildTransactionTable(transactions, boldFont, regularFont),
             ],
       ),
     );
@@ -51,8 +62,14 @@ class PdfExportService implements ExportService {
     );
   }
 
+  /// Loads a font from Flutter assets.
+  Future<pw.Font> _loadFont(String fontName) async {
+    final fontData = await rootBundle.load('assets/fonts/$fontName');
+    return pw.Font.ttf(fontData);
+  }
+
   /// Builds the page header.
-  pw.Widget _buildHeader(String title) {
+  pw.Widget _buildHeader(String title, pw.Font boldFont, pw.Font regularFont) {
     return pw.Container(
       padding: const pw.EdgeInsets.only(bottom: 12.0),
       decoration: const pw.BoxDecoration(
@@ -72,16 +89,17 @@ class PdfExportService implements ExportService {
               pw.Text(
                 'Koshly',
                 style: pw.TextStyle(
+                  font: boldFont,
                   fontSize: 22.0,
-                  fontWeight: pw.FontWeight.bold,
                   color: const PdfColor.fromInt(0xFF6C63FF),
                 ),
               ),
               pw.Text(
                 'Personal Finance Dashboard',
-                style: const pw.TextStyle(
+                style: pw.TextStyle(
+                  font: regularFont,
                   fontSize: 10.0,
-                  color: PdfColor.fromInt(0xFF6B7280),
+                  color: const PdfColor.fromInt(0xFF6B7280),
                 ),
               ),
             ],
@@ -91,16 +109,14 @@ class PdfExportService implements ExportService {
             children: [
               pw.Text(
                 title,
-                style: pw.TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: pw.FontWeight.bold,
-                ),
+                style: pw.TextStyle(font: boldFont, fontSize: 14.0),
               ),
               pw.Text(
                 'Generated: ${DateFormatter.formatDate(DateTime.now())}',
-                style: const pw.TextStyle(
+                style: pw.TextStyle(
+                  font: regularFont,
                   fontSize: 9.0,
-                  color: PdfColor.fromInt(0xFF6B7280),
+                  color: const PdfColor.fromInt(0xFF6B7280),
                 ),
               ),
             ],
@@ -110,8 +126,8 @@ class PdfExportService implements ExportService {
     );
   }
 
-  /// Builds the page footer with page numbers.
-  pw.Widget _buildFooter(pw.Context context) {
+  /// Builds the page footer.
+  pw.Widget _buildFooter(pw.Context context, pw.Font regularFont) {
     return pw.Container(
       padding: const pw.EdgeInsets.only(top: 8.0),
       decoration: const pw.BoxDecoration(
@@ -123,17 +139,19 @@ class PdfExportService implements ExportService {
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
           pw.Text(
-            'Koshly — Personal Finance Dashboard',
-            style: const pw.TextStyle(
+            'Koshly - Personal Finance Dashboard',
+            style: pw.TextStyle(
+              font: regularFont,
               fontSize: 8.0,
-              color: PdfColor.fromInt(0xFF9CA3AF),
+              color: const PdfColor.fromInt(0xFF9CA3AF),
             ),
           ),
           pw.Text(
             'Page ${context.pageNumber} of ${context.pagesCount}',
-            style: const pw.TextStyle(
+            style: pw.TextStyle(
+              font: regularFont,
               fontSize: 8.0,
-              color: PdfColor.fromInt(0xFF9CA3AF),
+              color: const PdfColor.fromInt(0xFF9CA3AF),
             ),
           ),
         ],
@@ -142,7 +160,12 @@ class PdfExportService implements ExportService {
   }
 
   /// Builds the financial summary section.
-  pw.Widget _buildSummarySection(double totalIncome, double totalExpenses) {
+  pw.Widget _buildSummarySection(
+    double totalIncome,
+    double totalExpenses,
+    pw.Font boldFont,
+    pw.Font regularFont,
+  ) {
     final balance = totalIncome - totalExpenses;
 
     return pw.Container(
@@ -157,7 +180,7 @@ class PdfExportService implements ExportService {
         children: [
           pw.Text(
             'Financial Summary',
-            style: pw.TextStyle(fontSize: 14.0, fontWeight: pw.FontWeight.bold),
+            style: pw.TextStyle(font: boldFont, fontSize: 14.0),
           ),
           pw.SizedBox(height: 12.0),
           pw.Row(
@@ -166,12 +189,16 @@ class PdfExportService implements ExportService {
                 'Total Income',
                 CurrencyFormatter.format(totalIncome),
                 const PdfColor.fromInt(0xFF2ECC71),
+                boldFont,
+                regularFont,
               ),
               pw.SizedBox(width: 16.0),
               _buildSummaryItem(
                 'Total Expenses',
                 CurrencyFormatter.format(totalExpenses),
                 const PdfColor.fromInt(0xFFE74C3C),
+                boldFont,
+                regularFont,
               ),
               pw.SizedBox(width: 16.0),
               _buildSummaryItem(
@@ -180,6 +207,8 @@ class PdfExportService implements ExportService {
                 balance >= 0
                     ? const PdfColor.fromInt(0xFF2ECC71)
                     : const PdfColor.fromInt(0xFFE74C3C),
+                boldFont,
+                regularFont,
               ),
             ],
           ),
@@ -189,26 +218,29 @@ class PdfExportService implements ExportService {
   }
 
   /// Builds a single summary item.
-  pw.Widget _buildSummaryItem(String label, String value, PdfColor color) {
+  pw.Widget _buildSummaryItem(
+    String label,
+    String value,
+    PdfColor color,
+    pw.Font boldFont,
+    pw.Font regularFont,
+  ) {
     return pw.Expanded(
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
             label,
-            style: const pw.TextStyle(
+            style: pw.TextStyle(
+              font: regularFont,
               fontSize: 9.0,
-              color: PdfColor.fromInt(0xFF6B7280),
+              color: const PdfColor.fromInt(0xFF6B7280),
             ),
           ),
           pw.SizedBox(height: 4.0),
           pw.Text(
             value,
-            style: pw.TextStyle(
-              fontSize: 14.0,
-              fontWeight: pw.FontWeight.bold,
-              color: color,
-            ),
+            style: pw.TextStyle(font: boldFont, fontSize: 14.0, color: color),
           ),
         ],
       ),
@@ -216,13 +248,17 @@ class PdfExportService implements ExportService {
   }
 
   /// Builds the transaction data table.
-  pw.Widget _buildTransactionTable(List<Transaction> transactions) {
+  pw.Widget _buildTransactionTable(
+    List<Transaction> transactions,
+    pw.Font boldFont,
+    pw.Font regularFont,
+  ) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
           'Transactions (${transactions.length})',
-          style: pw.TextStyle(fontSize: 14.0, fontWeight: pw.FontWeight.bold),
+          style: pw.TextStyle(font: boldFont, fontSize: 14.0),
         ),
         pw.SizedBox(height: 8.0),
         pw.Table(
@@ -230,29 +266,36 @@ class PdfExportService implements ExportService {
             color: const PdfColor.fromInt(0xFFE5E7EB),
             width: 0.5,
           ),
-          columnWidths: {
-            0: const pw.FlexColumnWidth(2.0),
-            1: const pw.FlexColumnWidth(3.0),
-            2: const pw.FlexColumnWidth(2.0),
-            3: const pw.FlexColumnWidth(1.5),
-            4: const pw.FlexColumnWidth(2.0),
+          columnWidths: const {
+            0: pw.FlexColumnWidth(2.0),
+            1: pw.FlexColumnWidth(3.0),
+            2: pw.FlexColumnWidth(2.0),
+            3: pw.FlexColumnWidth(1.5),
+            4: pw.FlexColumnWidth(2.0),
           },
           children: [
-            // ─── Table Header ──────────────────────────────
             pw.TableRow(
               decoration: const pw.BoxDecoration(
                 color: PdfColor.fromInt(0xFF6C63FF),
               ),
               children: [
-                _buildTableCell('Date', isHeader: true),
-                _buildTableCell('Title', isHeader: true),
-                _buildTableCell('Category', isHeader: true),
-                _buildTableCell('Type', isHeader: true),
-                _buildTableCell('Amount', isHeader: true),
+                _buildTableCell('Date', boldFont, regularFont, isHeader: true),
+                _buildTableCell('Title', boldFont, regularFont, isHeader: true),
+                _buildTableCell(
+                  'Category',
+                  boldFont,
+                  regularFont,
+                  isHeader: true,
+                ),
+                _buildTableCell('Type', boldFont, regularFont, isHeader: true),
+                _buildTableCell(
+                  'Amount',
+                  boldFont,
+                  regularFont,
+                  isHeader: true,
+                ),
               ],
             ),
-
-            // ─── Table Rows ────────────────────────────────
             ...transactions.asMap().entries.map((entry) {
               final index = entry.key;
               final transaction = entry.value;
@@ -266,14 +309,28 @@ class PdfExportService implements ExportService {
                           : const PdfColor.fromInt(0xFFF9FAFB),
                 ),
                 children: [
-                  _buildTableCell(DateFormatter.formatDate(transaction.date)),
-                  _buildTableCell(transaction.title),
-                  _buildTableCell(transaction.category.name),
-                  _buildTableCell(transaction.type.label),
+                  _buildTableCell(
+                    DateFormatter.formatDate(transaction.date),
+                    boldFont,
+                    regularFont,
+                  ),
+                  _buildTableCell(transaction.title, boldFont, regularFont),
+                  _buildTableCell(
+                    transaction.category.name,
+                    boldFont,
+                    regularFont,
+                  ),
+                  _buildTableCell(
+                    transaction.type.label,
+                    boldFont,
+                    regularFont,
+                  ),
                   _buildTableCell(
                     transaction.type.isIncome
                         ? '+${CurrencyFormatter.formatAmount(transaction.amount)}'
                         : '-${CurrencyFormatter.formatAmount(transaction.amount)}',
+                    boldFont,
+                    regularFont,
                     color:
                         transaction.type.isIncome
                             ? const PdfColor.fromInt(0xFF2ECC71)
@@ -290,7 +347,9 @@ class PdfExportService implements ExportService {
 
   /// Builds a single table cell.
   pw.Widget _buildTableCell(
-    String text, {
+    String text,
+    pw.Font boldFont,
+    pw.Font regularFont, {
     bool isHeader = false,
     PdfColor? color,
   }) {
@@ -299,8 +358,8 @@ class PdfExportService implements ExportService {
       child: pw.Text(
         text,
         style: pw.TextStyle(
+          font: isHeader ? boldFont : regularFont,
           fontSize: isHeader ? 9.0 : 8.5,
-          fontWeight: isHeader ? pw.FontWeight.bold : pw.FontWeight.normal,
           color:
               isHeader
                   ? PdfColors.white
@@ -310,7 +369,7 @@ class PdfExportService implements ExportService {
     );
   }
 
-  /// Generates a clean file name from the report title.
+  /// Generates a clean file name.
   String _generateFileName(String title) {
     final sanitized = title
         .toLowerCase()
