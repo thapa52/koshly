@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/reports/presentation/screens/reports_screen.dart';
 import '../../features/savings/presentation/screens/add_savings_goal_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/transactions/presentation/screens/add_transaction_screen.dart';
@@ -20,10 +21,11 @@ class AppRoutes {
   static const String transactions = '/transactions';
   static const String savings = '/savings';
   static const String settings = '/settings';
-  static const String addSavingsGoal = '/savings/add';
 
   // ─── Sub Routes ──────────────────────────────────────────
   static const String addTransaction = '/transactions/add';
+  static const String addSavingsGoal = '/savings/add';
+  static const String reports = '/reports';
 }
 
 /// Creates and configures the GoRouter instance.
@@ -84,6 +86,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.addSavingsGoal,
       builder: (context, state) => const AddSavingsGoalScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.reports,
+      builder: (context, state) => const ReportsScreen(),
     ),
   ],
 );
