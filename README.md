@@ -152,7 +152,7 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Unit Tests (56 domain use case tests passing)
 - [x] Savings feature (Goals, progress tracking, contributions)
 - [x] Theme toggle & Settings (Light/Dark/System with persistence)
-- [ ] Reports & Export
+- [x] Reports & Export (Monthly reports, CSV and PDF export)
 - [ ] Notifications
 
 ---

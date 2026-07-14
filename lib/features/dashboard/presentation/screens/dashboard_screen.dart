@@ -33,6 +33,11 @@ class DashboardScreen extends ConsumerWidget {
         title: const Text('Koshly'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.assessment_outlined),
+            tooltip: 'Reports',
+            onPressed: () => context.push(AppRoutes.reports),
+          ),
+          IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
               // TODO: Navigate to notifications
