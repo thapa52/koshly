@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/reports/presentation/screens/reports_screen.dart';
 import '../../features/savings/presentation/screens/add_savings_goal_screen.dart';
+import '../../features/savings/presentation/screens/savings_list_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/transactions/presentation/screens/add_transaction_screen.dart';
 import '../../features/transactions/presentation/screens/transaction_list_screen.dart';
@@ -61,11 +61,8 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.savings,
           pageBuilder:
-              (context, state) => const NoTransitionPage(
-                child: Scaffold(
-                  body: Center(child: Text('Savings - Coming Soon')),
-                ),
-              ),
+              (context, state) =>
+                  const NoTransitionPage(child: SavingsListScreen()),
         ),
 
         // ─── Settings Tab ─────────────────────────────────

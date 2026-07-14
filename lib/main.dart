@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/providers/theme_provider.dart';
+import 'core/services/notification_service.dart';
 import 'features/savings/data/repositories/hive_savings_repository.dart';
 import 'features/savings/presentation/providers/savings_repository_provider.dart';
 import 'features/transactions/data/repositories/hive_transaction_repository.dart';
@@ -22,6 +23,10 @@ Future<void> main() async {
 
   // Initialize Hive.
   await Hive.initFlutter();
+
+  // Initialize notification service
+  final notificationService = NotificationService();
+  await notificationService.initialize();
 
   // Initialize repositories
   final transactionRepository = HiveTransactionRepository();
