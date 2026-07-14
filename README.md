@@ -153,7 +153,7 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Savings feature (Goals, progress tracking, contributions)
 - [x] Theme toggle & Settings (Light/Dark/System with persistence)
 - [x] Reports & Export (Monthly reports, CSV and PDF export)
-- [ ] Notifications
+- [x] Notifications (Bill reminders with local notifications)
 
 ---
 
