@@ -5,9 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/utils/currency_formatter.dart';
+import '../../../../core/widgets/balance_card.dart';
 import '../../domain/entities/transaction.dart';
-import '../../domain/use_cases/get_transaction_summary.dart';
 import '../providers/transaction_providers.dart';
 import '../widgets/transaction_tile.dart';
 
@@ -32,7 +31,12 @@ class TransactionListScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () {
-              // TODO: Implement filter
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Filters coming in a future update'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             },
           ),
         ],
@@ -66,7 +70,7 @@ class TransactionListScreen extends ConsumerWidget {
         data:
             (transactions) => Column(
               children: [
-                _buildSummaryCard(context, summaryAsync),
+                BalanceCard(summaryAsync: summaryAsync),
                 Expanded(
                   child:
                       transactions.isEmpty
@@ -83,122 +87,6 @@ class TransactionListScreen extends ConsumerWidget {
         icon: const Icon(Icons.add),
         label: const Text('Add'),
       ),
-    );
-  }
-
-  /// Builds the balance summary card at the top.
-  Widget _buildSummaryCard(
-    BuildContext context,
-    AsyncValue<TransactionSummary> summaryAsync,
-  ) {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.primaryDark],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            blurRadius: 12.0,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: summaryAsync.when(
-        loading:
-            () => const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            ),
-        error:
-            (_, __) => const Text(
-              'Unable to load summary',
-              style: TextStyle(color: Colors.white),
-            ),
-        data:
-            (summary) => Column(
-              children: [
-                Text(
-                  'Total Balance',
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: Colors.white.withValues(alpha: 0.8),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  CurrencyFormatter.format(summary.balance),
-                  style: AppTextStyles.amountLarge.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildSummaryItem(
-                      icon: Icons.arrow_downward,
-                      label: 'Income',
-                      amount: summary.totalIncome,
-                      color: AppColors.income,
-                    ),
-                    Container(
-                      height: 40.0,
-                      width: 1.0,
-                      color: Colors.white.withValues(alpha: 0.3),
-                    ),
-                    _buildSummaryItem(
-                      icon: Icons.arrow_upward,
-                      label: 'Expense',
-                      amount: summary.totalExpenses,
-                      color: AppColors.expense,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-      ),
-    );
-  }
-
-  /// Builds a single income/expense summary item.
-  Widget _buildSummaryItem({
-    required IconData icon,
-    required String label,
-    required double amount,
-    required Color color,
-  }) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Icon(icon, color: color, size: 18.0),
-        ),
-        const SizedBox(width: 10.0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: Colors.white.withValues(alpha: 0.8),
-              ),
-            ),
-            const SizedBox(height: 2.0),
-            Text(
-              CurrencyFormatter.format(amount),
-              style: AppTextStyles.amountSmall.copyWith(color: Colors.white),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -250,7 +138,12 @@ class TransactionListScreen extends ConsumerWidget {
         return TransactionTile(
           transaction: transaction,
           onTap: () {
-            // TODO: Navigate to edit transaction screen
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Edit transaction coming in a future update'),
+                duration: Duration(seconds: 2),
+              ),
+            );
           },
         );
       },
