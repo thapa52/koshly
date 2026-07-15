@@ -14,14 +14,13 @@ A production-level personal finance dashboard built with Flutter & Clean Archite
 
 ## Features
 
-- **Dashboard** — Beautiful overview of your financial health
+- **Dashboard** — Beautiful financial overview with spending charts
 - **Transactions** — Track income and expenses with categories
-- **Savings Goals** — Set and track progress toward financial goals
-- **Reports** — Monthly/weekly charts and analytics
+- **Savings Goals** — Set goals, track progress, add contributions
+- **Reports** — Monthly summaries with CSV and PDF export
 - **Bill Reminders** — Local notifications for upcoming bills
-- **Export** — Generate PDF and CSV reports
-- **Dark/Light Theme** — Full theme support
-- **Fully Offline** — No internet connection required
+- **Dark/Light Theme** — Full theme support with persistence
+- **Fully Offline** — No internet connection required ever
 
 ---
 
@@ -35,10 +34,11 @@ A production-level personal finance dashboard built with Flutter & Clean Archite
 | **Navigation** | GoRouter |
 | **Local Database** | Hive |
 | **Charts** | FL Chart |
-| **Code Generation** | Freezed, Riverpod Generator |
+| **Code Generation** | Hive Generator, Riverpod Generator |
 | **Notifications** | Flutter Local Notifications |
 | **Export** | PDF, CSV |
 | **Preferences** | Shared Preferences |
+| **Testing** | flutter_test, mocktail |
 
 ---
 
@@ -48,28 +48,41 @@ This project follows **Clean Architecture** principles with a feature-first fold
 
 ~~~
 lib/
-├── core/                     # Shared across all features
-│   ├── constants/            # App-wide constants
-│   ├── error/                # Error handling
-│   ├── theme/                # Light & dark theme
-│   ├── utils/                # Utility functions
-│   └── widgets/              # Reusable widgets
+├── core/                          # Shared across all features
+│   ├── constants/                 # App-wide constants
+│   ├── error/                     # Failure classes
+│   ├── navigation/                # GoRouter configuration
+│   ├── providers/                 # Global providers (theme)
+│   ├── services/                  # Cross-cutting services (notifications)
+│   ├── theme/                     # Light & dark theme
+│   ├── utils/                     # Date and currency formatters
+│   └── widgets/                   # Reusable widgets (BalanceCard)
 │
 ├── features/
-│   ├── dashboard/            # Financial overview & charts
-│   │   ├── data/             # Hive models, repositories
-│   │   ├── domain/           # Entities, use cases
-│   │   └── presentation/     # Screens, widgets, providers
+│   ├── dashboard/                 # Financial overview & charts
+│   │   └── presentation/
+│   │       ├── providers/         # Dashboard computed providers
+│   │       ├── screens/           # Dashboard screen
+│   │       └── widgets/           # Chart widgets
 │   │
-│   ├── transactions/         # Income & expense tracking
+│   ├── transactions/              # Income & expense tracking
+│   │   ├── data/                  # Hive models, repository implementation
+│   │   ├── domain/                # Entities, use cases, repository interface
+│   │   └── presentation/          # Providers, screens, widgets
+│   │
+│   ├── savings/                   # Savings goals tracking
 │   │   ├── data/
 │   │   ├── domain/
 │   │   └── presentation/
 │   │
-│   └── savings/              # Savings goals tracking
-│       ├── data/
-│       ├── domain/
+│   ├── reports/                   # Monthly reports & export
+│   │   ├── data/                  # CSV and PDF export services
+│   │   ├── domain/                # Export service interface
+│   │   └── presentation/          # Report screen and providers
+│   │
+│   └── settings/                  # App preferences
 │       └── presentation/
+│           └── screens/           # Settings screen
 │
 └── main.dart
 ~~~
@@ -116,24 +129,49 @@ flutter run
 ## Code Generation
 
 This project uses code generation for:
-- Hive adapters
+- Hive adapters (local database)
 - Riverpod providers
-- Freezed models
 - JSON serialization
 
 Generated files (`*.g.dart`, `*.freezed.dart`) are **not committed** to Git.
 
-Whenever you add or modify annotated classes, run:
+After cloning, always run:
 
 ~~~bash
 dart run build_runner build --delete-conflicting-outputs
 ~~~
 
-During active development, you can use watch mode:
+During active development, use watch mode:
 
 ~~~bash
 dart run build_runner watch --delete-conflicting-outputs
 ~~~
+
+---
+
+## Testing
+
+Run the full test suite:
+
+~~~bash
+flutter test
+~~~
+
+Run with detailed output:
+
+~~~bash
+flutter test --reporter expanded
+~~~
+
+### Test Coverage
+
+| Feature | Tests |
+| :--- | :--- |
+| Transaction use cases | 56 tests |
+| Savings use cases | 51 tests |
+| **Total** | **107 tests** |
+
+All tests use fake repository implementations — no real database or network calls.
 
 ---
 
@@ -149,11 +187,12 @@ dart run build_runner watch --delete-conflicting-outputs
 - [x] Transaction presentation layer (Providers, Screens, Widgets)
 - [x] GoRouter navigation
 - [x] Dashboard with FL Chart (Pie chart, Bar chart, Recent transactions)
-- [x] Unit Tests (56 domain use case tests passing)
+- [x] Unit Tests (107 tests passing)
 - [x] Savings feature (Goals, progress tracking, contributions)
-- [x] Theme toggle & Settings (Light/Dark/System with persistence)
 - [x] Reports & Export (Monthly reports, CSV and PDF export)
+- [x] Theme toggle & Settings (Light/Dark/System with persistence)
 - [x] Notifications (Bill reminders with local notifications)
+- [x] Final polish (Reusable widgets, TODO cleanup)
 
 ---
 
