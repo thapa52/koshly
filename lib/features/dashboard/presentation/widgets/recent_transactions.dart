@@ -92,9 +92,7 @@ class RecentTransactions extends ConsumerWidget {
                           children: [
                             TransactionTile(
                               transaction: transaction,
-                              onTap: () {
-                                // TODO: Navigate to transaction detail
-                              },
+                              onTap: () => context.go(AppRoutes.transactions),
                             ),
                             if (!isLast)
                               Divider(

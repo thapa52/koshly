@@ -1,3 +1,4 @@
+import 'package:koshly/features/savings/domain/entities/savings_goal.dart';
 import 'package:koshly/features/transactions/domain/entities/category.dart';
 import 'package:koshly/features/transactions/domain/entities/transaction.dart';
 import 'package:koshly/features/transactions/domain/entities/transaction_type.dart';
@@ -172,4 +173,50 @@ class TestData {
 
   /// Total number of test transactions
   static int get transactionCount => allTransactions.length;
+
+  // ─── Savings Goals ───────────────────────────────────────────
+
+  static SavingsGoal emergencyFundGoal = SavingsGoal(
+    id: 'goal-emergency',
+    title: 'Emergency Fund',
+    targetAmount: 10000.0,
+    currentAmount: 3500.0,
+    iconCode: 0xe910,
+    colorValue: 0xFF3498DB,
+    createdAt: DateTime(2025, 6, 1),
+  );
+
+  static SavingsGoal vacationGoal = SavingsGoal(
+    id: 'goal-vacation',
+    title: 'Vacation',
+    targetAmount: 3000.0,
+    currentAmount: 3000.0, // Completed goal
+    iconCode: 0xe7ef,
+    colorValue: 0xFF2ECC71,
+    createdAt: DateTime(2025, 5, 1),
+  );
+
+  static SavingsGoal laptopGoal = SavingsGoal(
+    id: 'goal-laptop',
+    title: 'New Laptop',
+    targetAmount: 1500.0,
+    currentAmount: 0.0,
+    iconCode: 0xe321,
+    colorValue: 0xFF6C63FF,
+    deadline: DateTime(2027, 12, 31),
+    createdAt: DateTime(2025, 6, 10),
+  );
+
+  /// All test savings goals
+  static List<SavingsGoal> get allGoals => [
+    emergencyFundGoal,
+    vacationGoal,
+    laptopGoal,
+  ];
+
+  /// Only active (in progress) goals
+  static List<SavingsGoal> get activeGoals => [emergencyFundGoal, laptopGoal];
+
+  /// Only completed goals
+  static List<SavingsGoal> get completedGoals => [vacationGoal];
 }
